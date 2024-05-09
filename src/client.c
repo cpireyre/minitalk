@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:46:36 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/09 13:17:27 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:32:16 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static void	speak(pid_t listener, const char *str)
 		spell(listener, *str);
 		str++;
 	}
-	spell(listener, 0);
+	if (BONUS)
+		spell(listener, 0);
 }
 
 static void	spell(pid_t listener, char c)
