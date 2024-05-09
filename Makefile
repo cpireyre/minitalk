@@ -1,8 +1,8 @@
-CC := cc
-CFLAGS := -Wall -Wextra -Werror
-CFLAGS += -I./include/
-SERVER := server
-CLIENT := client
+CC 		:= cc
+CFLAGS	:= -Wall -Wextra -Werror
+CFLAGS	+= -I./include/
+SERVER	:= server
+CLIENT	:= client
 
 .PHONY: all
 all: $(SERVER) $(CLIENT)
