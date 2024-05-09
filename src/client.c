@@ -1,20 +1,53 @@
-#include <signal.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/09 12:46:36 by copireyr          #+#    #+#             */
+/*   Updated: 2024/05/09 13:17:27 by copireyr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	spell(pid_t listener, char c);
+#include "minitalk.h"
 
-void	speak(pid_t listener, const char *str)
+static void	handler(int sig);
+static int	ft_atoi(const char *str);
+static void	speak(pid_t listener, const char *str);
+static void	spell(pid_t listener, char c);
+
+int	main(int argc, char **argv)
+{
+	pid_t				server_pid;
+	struct sigaction	sa;
+
+	if (argc == 3)
+	{
+		if (BONUS)
+		{
+			sigemptyset(&sa.sa_mask);
+			sa.sa_flags = 0;
+			sa.sa_handler = &handler;
+			sigaction(SIGUSR1, &sa, NULL);
+		}
+		server_pid = (pid_t)ft_atoi(argv[1]);
+		speak(server_pid, argv[2]);
+	}
+	return (0);
+}
+
+static void	speak(pid_t listener, const char *str)
 {
 	while (*str)
 	{
 		spell(listener, *str);
 		str++;
 	}
+	spell(listener, 0);
 }
 
-void	spell(pid_t listener, char c)
+static void	spell(pid_t listener, char c)
 {
 	int	mask;
 
@@ -26,28 +59,28 @@ void	spell(pid_t listener, char c)
 		else
 			kill(listener, SIGUSR1);
 		mask++;
-		usleep(500);
+		usleep(200);
 	}
 }
 
-void	handler(int sig)
+static void	handler(int sig)
 {
+	(void)sig;
+	write(1, "Server acknowledged the message!\n", 33);
 }
 
-int	main(int argc, char **argv)
+static int	ft_atoi(const char *str)
 {
-	pid_t			server_pid;
-	struct sigaction	sa;
+	int	nbr;
+	int	sign;
 
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = &handler;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	if (argc == 3)
-	{
-		server_pid = (pid_t)atoi(argv[1]);
-		speak(server_pid, argv[2]);
-	}
-	return (0);
+	while (*str == '\t' || *str == '\n' || *str == '\v'
+		|| *str == '\f' || *str == '\r' || *str == ' ')
+		str++;
+	sign = (*str != '-') - (*str == '-');
+	str += *str == '-' || *str == '+';
+	nbr = 0;
+	while ('0' <= *str && *str <= '9')
+		nbr = nbr * 10 + *str++ - '0';
+	return (sign * nbr);
 }

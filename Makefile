@@ -1,5 +1,11 @@
+CC := cc
+CFLAGS := -Wall -Wextra -Werror
+CFLAGS += -I./include/
 SERVER := server
 CLIENT := client
+
+.PHONY: all
+all: $(SERVER) $(CLIENT)
 
 $(SERVER): ./src/server.c
 	$(CC) $(CFLAGS) $< -o $@
@@ -7,12 +13,15 @@ $(SERVER): ./src/server.c
 $(CLIENT): ./src/client.c
 	$(CC) $(CFLAGS) $< -o $@
 
-all: $(SERVER) $(CLIENT)
-
+target bonus: CFLAGS += -DBONUS=1
+.PHONY: bonus
 bonus: all
 
+.PHONY: clean
+clean:
+
 .PHONY: fclean
-fclean:
+fclean: clean
 	$(RM) $(SERVER)
 	$(RM) $(CLIENT)
 
