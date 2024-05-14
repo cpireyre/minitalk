@@ -50,18 +50,22 @@ static void	speak(pid_t listener, const char *str)
 
 static void	spell(pid_t listener, char c)
 {
-	int	mask;
-
-	mask = 0;
-	while (mask < 8)
-	{
-		if (c & (1 << mask))
-			kill(listener, SIGUSR2);
-		else
-			kill(listener, SIGUSR1);
-		mask++;
-		usleep(200);
-	}
+	kill(listener, SIGUSR1 + ((c >> 0) & 1));
+	usleep(300);
+	kill(listener, SIGUSR1 + ((c >> 1) & 1));
+	usleep(300);
+	kill(listener, SIGUSR1 + ((c >> 2) & 1));
+	usleep(300);
+	kill(listener, SIGUSR1 + ((c >> 3) & 1));
+	usleep(300);
+	kill(listener, SIGUSR1 + ((c >> 4) & 1));
+	usleep(300);
+	kill(listener, SIGUSR1 + ((c >> 5) & 1));
+	usleep(300);
+	kill(listener, SIGUSR1 + ((c >> 6) & 1));
+	usleep(300);
+	kill(listener, SIGUSR1 + ((c >> 7) & 1));
+	usleep(300);
 }
 
 static void	handler(int sig)
@@ -76,7 +80,7 @@ static int	ft_atoi(const char *str)
 	int	sign;
 
 	while (*str == '\t' || *str == '\n' || *str == '\v'
-		|| *str == '\f' || *str == '\r' || *str == ' ')
+			|| *str == '\f' || *str == '\r' || *str == ' ')
 		str++;
 	sign = (*str != '-') - (*str == '-');
 	str += *str == '-' || *str == '+';
