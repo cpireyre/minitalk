@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:46:36 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/09 13:32:16 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/15 09:43:05 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	ft_atoi(const char *str)
 	int	sign;
 
 	while (*str == '\t' || *str == '\n' || *str == '\v'
-			|| *str == '\f' || *str == '\r' || *str == ' ')
+		|| *str == '\f' || *str == '\r' || *str == ' ')
 		str++;
 	sign = (*str != '-') - (*str == '-');
 	str += *str == '-' || *str == '+';
