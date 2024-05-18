@@ -1,91 +1,30 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/09 12:46:36 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/09 13:32:16 by copireyr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minitalk.h"
-
-static void	handler(int sig);
-static int	ft_atoi(const char *str);
-static void	speak(pid_t listener, const char *str);
-static void	spell(pid_t listener, char c);
 
 int	main(int argc, char **argv)
 {
-	pid_t				server_pid;
-	struct sigaction	sa;
+	pid_t	server;
+	size_t	msg_size;
+	struct sigaction	action;
 
+	action.sa_sigaction = handler;
+	action.sa_flags = SA_SIGINFO;
+	sigemptyset(&(action.sa_mask));
+	sigaddset(&(action.sa_mask), SIGUSR1);
+	sigaddset(&(action.sa_mask), SIGUSR2);
+	sigaction(SIGUSR1, &action, NULL);
+	sigaction(SIGUSR2, &action, NULL);
+	printf("Client pid %d\n", getpid());
 	if (argc == 3)
 	{
-		if (BONUS)
-		{
-			sigemptyset(&sa.sa_mask);
-			sa.sa_flags = 0;
-			sa.sa_handler = &handler;
-			sigaction(SIGUSR1, &sa, NULL);
-		}
-		server_pid = (pid_t)ft_atoi(argv[1]);
-		speak(server_pid, argv[2]);
+		msg_size = strlen(argv[2]);
+		printf("%s: %zu\n", argv[2], msg_size);
+		server = atoi(argv[1]);
+		send(server, &msg_size, sizeof(msg_size));
+		printf("Sent msg size %zu", msg_size);
+		send(server, argv[2], msg_size);
 	}
-	return (0);
-}
-
-static void	speak(pid_t listener, const char *str)
-{
-	while (*str)
+	else
 	{
-		spell(listener, *str);
-		str++;
+		dprintf(STDERR_FILENO, "usage: ./client server_pid message");
 	}
-	if (BONUS)
-		spell(listener, 0);
-}
-
-static void	spell(pid_t listener, char c)
-{
-	kill(listener, SIGUSR1 + ((c >> 0) & 1));
-	usleep(300);
-	kill(listener, SIGUSR1 + ((c >> 1) & 1));
-	usleep(300);
-	kill(listener, SIGUSR1 + ((c >> 2) & 1));
-	usleep(300);
-	kill(listener, SIGUSR1 + ((c >> 3) & 1));
-	usleep(300);
-	kill(listener, SIGUSR1 + ((c >> 4) & 1));
-	usleep(300);
-	kill(listener, SIGUSR1 + ((c >> 5) & 1));
-	usleep(300);
-	kill(listener, SIGUSR1 + ((c >> 6) & 1));
-	usleep(300);
-	kill(listener, SIGUSR1 + ((c >> 7) & 1));
-	usleep(300);
-}
-
-static void	handler(int sig)
-{
-	(void)sig;
-	write(1, "Server acknowledged the message!\n", 33);
-}
-
-static int	ft_atoi(const char *str)
-{
-	int	nbr;
-	int	sign;
-
-	while (*str == '\t' || *str == '\n' || *str == '\v'
-			|| *str == '\f' || *str == '\r' || *str == ' ')
-		str++;
-	sign = (*str != '-') - (*str == '-');
-	str += *str == '-' || *str == '+';
-	nbr = 0;
-	while ('0' <= *str && *str <= '9')
-		nbr = nbr * 10 + *str++ - '0';
-	return (sign * nbr);
 }

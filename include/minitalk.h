@@ -1,24 +1,26 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/09 13:01:00 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/09 13:28:09 by copireyr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINITALK_H
 # define MINITALK_H
 
-# ifndef BONUS
-#  define BONUS 0
+# include <unistd.h>
+# include <stdio.h> // remove this
+# include <string.h> // remove this
+# include <signal.h>
+# include <stdlib.h>
+
+# ifndef DELAY_MS
+#   define DELAY_MS	100
 # endif
 
-# include <signal.h>
-# include <unistd.h>
-# include <sys/types.h>
+typedef struct
+{
+	int	sig;
+	int	pid;
+}	t_signal_state;
+
+static volatile t_signal_state g_state;
+
+void	send(pid_t listener, void *addr, size_t size);
+void	*receive(void *addr, size_t size);
+void	handler(int sig, siginfo_t *siginfo, void *ctx);
 
 #endif
