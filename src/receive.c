@@ -16,8 +16,23 @@ void	*receive(void *addr, size_t size)
 void	handler(int sig, siginfo_t *siginfo, void *ctx)
 {
 	(void)ctx;
-	g_state.sig = sig;
-	g_state.pid = siginfo->si_pid;
+	if (!g_state.pid)
+		g_state.pid = siginfo->si_pid;
+	if (siginfo->si_pid == g_state.pid)
+		g_state.sig = sig;
+}
+
+void	init_signal_handler(void)
+{
+	struct sigaction	action;
+
+	action.sa_sigaction = &handler;
+	action.sa_flags = SA_SIGINFO;
+	sigemptyset(&(action.sa_mask));
+	sigaddset(&(action.sa_mask), SIGUSR1);
+	sigaddset(&(action.sa_mask), SIGUSR2);
+	sigaction(SIGUSR1, &action, NULL);
+	sigaction(SIGUSR2, &action, NULL);
 }
 
 static unsigned char	receive_byte(void)
@@ -29,7 +44,8 @@ static unsigned char	receive_byte(void)
 	ret = 0;
 	while (bit_count < 8)
 	{
-		pause();
+		while (!g_state.sig)
+			usleep(1);
 		if (g_state.sig == SIGUSR2)
 			ret |= (1 << (7 - bit_count));
 		bit_count++;
