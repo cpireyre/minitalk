@@ -40,7 +40,7 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(client)
+	$(RM) $(client) $(server)
 
 .PHONY: re
 re: fclean all
