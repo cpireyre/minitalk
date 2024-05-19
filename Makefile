@@ -40,4 +40,8 @@ fclean: clean
 .PHONY: re
 re: fclean all
 
+.PHONY: test
+test: | all
+	./test.sh
+
 -include $(client_objects:.o=.d) $(server_objects:.o=.d)
