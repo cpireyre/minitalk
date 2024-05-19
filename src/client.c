@@ -1,11 +1,16 @@
 #include "minitalk.h"
 
+void	noop(int sig)
+{
+	(void)sig;
+}
+
 int	main(int argc, char **argv)
 {
 	pid_t	server;
 	size_t	msg_size;
 
-	init_signal_handler();
+	signal(SIGUSR1, &noop);
 	if (argc == 3)
 	{
 		server = atoi(argv[1]);

@@ -1,5 +1,8 @@
 #include "minitalk.h"
 
+static volatile sig_atomic_t got;
+static volatile sig_atomic_t pid;
+
 static unsigned char	receive_byte(void);
 
 void	*receive(void *addr, size_t size)
@@ -16,22 +19,8 @@ void	*receive(void *addr, size_t size)
 void	handler(int sig, siginfo_t *siginfo, void *ctx)
 {
 	(void)ctx;
-	if (!g_state.pid)
-		g_state.pid = siginfo->si_pid;
-	g_state.sig = sig;
-}
-
-void	init_signal_handler(void)
-{
-	struct sigaction	action;
-
-	action.sa_sigaction = &handler;
-	action.sa_flags = SA_SIGINFO;
-	sigemptyset(&(action.sa_mask));
-	sigaddset(&(action.sa_mask), SIGUSR1);
-	sigaddset(&(action.sa_mask), SIGUSR2);
-	sigaction(SIGUSR1, &action, NULL);
-	sigaction(SIGUSR2, &action, NULL);
+	pid = siginfo->si_pid;
+	got = sig;
 }
 
 static unsigned char	receive_byte(void)
@@ -43,11 +32,13 @@ static unsigned char	receive_byte(void)
 	ret = 0;
 	while (bit_count < 8)
 	{
-		pause();
-		if (g_state.sig == SIGUSR2)
+		while (!got)
+			usleep(1);
+		if (got == SIGUSR2)
 			ret |= 1 << (7 - bit_count);
 		bit_count++;
-		g_state.sig = 0;
+		got = 0;
+		kill(pid, SIGUSR1);
 	}
 	return (ret);
 }
