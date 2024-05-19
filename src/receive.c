@@ -18,8 +18,7 @@ void	handler(int sig, siginfo_t *siginfo, void *ctx)
 	(void)ctx;
 	if (!g_state.pid)
 		g_state.pid = siginfo->si_pid;
-	if (siginfo->si_pid == g_state.pid)
-		g_state.sig = sig;
+	g_state.sig = sig;
 }
 
 void	init_signal_handler(void)
@@ -44,10 +43,9 @@ static unsigned char	receive_byte(void)
 	ret = 0;
 	while (bit_count < 8)
 	{
-		while (!g_state.sig)
-			usleep(1);
+		pause();
 		if (g_state.sig == SIGUSR2)
-			ret |= (1 << (7 - bit_count));
+			ret |= 1 << (7 - bit_count);
 		bit_count++;
 		g_state.sig = 0;
 	}

@@ -9,8 +9,10 @@ int	main(int argc, char **argv)
 	if (argc == 3)
 	{
 		server = atoi(argv[1]);
-		msg_size = strlen(argv[2]);
+		msg_size = strlen(argv[2]) + 1;
+		puts("Sending size");
 		send(server, &msg_size, sizeof(msg_size));
+		puts("Sending message");
 		send(server, argv[2], msg_size);
 	}
 	else

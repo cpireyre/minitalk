@@ -1,5 +1,4 @@
 .DEFAULT_GOAL := all
-.DELETE_ON_ERROR:
 .SUFFIXES:
 
 CC := cc
@@ -19,13 +18,16 @@ $(obj_dir)/%.o: $(src_dir)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 client: $(client_objects)
-	$(CC) $(client_objects) -o $@
+	$(CC) $(CFLAGS) $(client_objects) -o $@
 
 server: $(server_objects)
-	$(CC) $(server_objects) -o $@
+	$(CC) $(CFLAGS) $(server_objects) -o $@
 
 .PHONY: all
 all: $(applications)
+
+.PHONY: bonus
+bonus: all
 
 .PHONY: clean
 clean:
@@ -43,5 +45,9 @@ re: fclean all
 .PHONY: test
 test: | all
 	./test.sh
+
+.PHONY: debug
+debug: CFLAGS += -g -fsanitize=address -fsanitize=undefined
+debug: all
 
 -include $(client_objects:.o=.d) $(server_objects:.o=.d)
