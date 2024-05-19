@@ -49,4 +49,8 @@ re: fclean all
 target debug: CFLAGS += -g -fsanitize=address
 debug: fclean all
 
+.PHONY: run
+run: all
+	./$(server)
+
 -include $(dep_files)
