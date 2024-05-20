@@ -2,10 +2,9 @@
 # define MINITALK_H
 
 # include <unistd.h>
-# include <stdio.h> // remove this
-# include <string.h> // remove this
 # include <signal.h>
 # include <stdlib.h>
+# include "libft.h"
 
 # ifndef DELAY_MS
 #   define DELAY_MS	500

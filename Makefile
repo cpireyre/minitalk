@@ -3,7 +3,10 @@
 
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -MMD -MP
-CPPFLAGS := -I./include/
+CPPFLAGS := -I./include/ -I./libft/include
+libft_dir := ./libft/
+libft := $(libft_dir)libft.a
+LDFLAGS := -L$(libft_dir) -lft
 
 applications := client server
 src_dir := ./src
@@ -13,15 +16,18 @@ client_objects := $(client_sources:%.c=$(obj_dir)/%.o)
 server_sources := server.c receive.c
 server_objects := $(server_sources:%.c=$(obj_dir)/%.o)
 
+$(libft):
+	$(MAKE)  -C $(libft_dir)
+
 $(obj_dir)/%.o: $(src_dir)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-client: $(client_objects)
-	$(CC) $(CFLAGS) $(client_objects) -o $@
+client: $(libft) $(client_objects)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(client_objects) -o $@
 
-server: $(server_objects)
-	$(CC) $(CFLAGS) $(server_objects) -o $@
+server: $(libft) $(server_objects)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(server_objects) -o $@
 
 .PHONY: all
 all: $(applications)
@@ -34,10 +40,12 @@ clean:
 	$(RM) $(client_objects) $(server_objects)
 	$(RM) $(client_objects:.o=.d) $(server_objects:.o=.d)
 	@rmdir $(obj_dir) 2> /dev/null || true
+	$(MAKE) -C $(libft_dir) clean
 
 .PHONY: fclean
 fclean: clean
 	$(RM) $(applications)
+	$(MAKE) -C $(libft_dir) fclean
 
 .PHONY: re
 re: fclean all

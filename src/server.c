@@ -15,7 +15,7 @@ int	main(void)
 	sigaction(SIGUSR1, &action, NULL);
 	sigaction(SIGUSR2, &action, NULL);
 	server_pid = getpid();
-	printf("%u\n", server_pid);
+	ft_printf("%u\n", server_pid);
 	while (1)
 	{
 		msg_size = 0;

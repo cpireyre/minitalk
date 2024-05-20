@@ -9,7 +9,7 @@ void	*receive(void *addr, size_t size)
 {
 	unsigned char	*ptr;
 
-	bzero(addr, size);
+	ft_bzero(addr, size);
 	ptr = (unsigned char *) addr;
 	while (size--)
 		*ptr++ = receive_byte();

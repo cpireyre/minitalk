@@ -1,0 +1,6 @@
+*.d
+*.a
+*.o
+*.swp
+a.out
+*bonus
