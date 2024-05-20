@@ -6,12 +6,11 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 12:43:30 by copireyr          #+#    #+#             */
-/*   Updated: 2024/04/25 09:31:05 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:29:34 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <limits.h>
 #include "libft.h"
 
