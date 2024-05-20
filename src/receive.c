@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   receive.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 10:18:54 by copireyr          #+#    #+#             */
+/*   Updated: 2024/05/20 10:27:56 by copireyr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
-static volatile sig_atomic_t got;
-static volatile sig_atomic_t pid;
+static volatile sig_atomic_t	got;
+static volatile sig_atomic_t	pid;
 
 static unsigned char	receive_byte(void);
 
@@ -25,7 +37,7 @@ void	handler(int sig, siginfo_t *siginfo, void *ctx)
 
 static unsigned char	receive_byte(void)
 {
-	size_t		bit_count;
+	size_t			bit_count;
 	unsigned char	ret;
 
 	bit_count = 0;

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 10:18:32 by copireyr          #+#    #+#             */
+/*   Updated: 2024/05/20 10:25:39 by copireyr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
-void	noop(int sig)
+void	nop(int sig)
 {
 	(void)sig;
 }
@@ -10,7 +22,7 @@ int	main(int argc, char **argv)
 	pid_t	server;
 	size_t	msg_size;
 
-	signal(SIGUSR1, &noop);
+	signal(SIGUSR1, &nop);
 	if (argc == 3)
 	{
 		server = ft_atoi(argv[1]);

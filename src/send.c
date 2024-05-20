@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   send.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 10:19:05 by copireyr          #+#    #+#             */
+/*   Updated: 2024/05/20 10:27:37 by copireyr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 static void	spell(pid_t listener, unsigned char byte, useconds_t delay_ms);
@@ -14,7 +26,7 @@ void	send(pid_t listener, void *addr, size_t size)
 static void	spell(pid_t listener, unsigned char c, useconds_t delay_ms)
 {
 	size_t	bit_count;
-	int	signal_to_send;
+	int		signal_to_send;
 
 	bit_count = 0;
 	while (bit_count < 8)

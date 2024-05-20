@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 10:19:59 by copireyr          #+#    #+#             */
+/*   Updated: 2024/05/20 10:24:22 by copireyr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 int	main(void)
 {
-	pid_t	server_pid;
-	size_t	msg_size;
-	char	*msg;
 	struct sigaction	action;
+	pid_t				server_pid;
+	size_t				msg_size;
+	char				*msg;
 
 	action.sa_sigaction = &handler;
 	action.sa_flags = SA_SIGINFO;

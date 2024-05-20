@@ -6,9 +6,10 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:12:56 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/20 10:13:27 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:25:39 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <stdlib.h>
 
 char	*ft_strndup(const char *src, size_t n)

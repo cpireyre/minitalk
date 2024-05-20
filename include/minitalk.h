@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 10:18:17 by copireyr          #+#    #+#             */
+/*   Updated: 2024/05/20 10:18:28 by copireyr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINITALK_H
 # define MINITALK_H
 
@@ -7,7 +19,7 @@
 # include "libft.h"
 
 # ifndef DELAY_MS
-#   define DELAY_MS	500
+#  define DELAY_MS	500
 # endif
 
 void	send(pid_t listener, void *addr, size_t size);
