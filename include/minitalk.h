@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:18:17 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/20 10:18:28 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:31:26 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # ifndef DELAY_MS
 #  define DELAY_MS	500
 # endif
+
+typedef struct s_client
+{
+	volatile sig_atomic_t	got;
+	volatile sig_atomic_t	pid;
+}	t_client;
 
 void	send(pid_t listener, void *addr, size_t size);
 void	*receive(void *addr, size_t size);

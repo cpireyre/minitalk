@@ -6,14 +6,13 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:18:54 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/20 10:27:56 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:31:36 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static volatile sig_atomic_t	got;
-static volatile sig_atomic_t	pid;
+static t_client	g_client;
 
 static unsigned char	receive_byte(void);
 
@@ -31,8 +30,8 @@ void	*receive(void *addr, size_t size)
 void	handler(int sig, siginfo_t *siginfo, void *ctx)
 {
 	(void)ctx;
-	pid = siginfo->si_pid;
-	got = sig;
+	g_client.pid = siginfo->si_pid;
+	g_client.got = sig;
 }
 
 static unsigned char	receive_byte(void)
@@ -44,13 +43,13 @@ static unsigned char	receive_byte(void)
 	ret = 0;
 	while (bit_count < 8)
 	{
-		while (!got)
+		while (!g_client.got)
 			usleep(1);
-		if (got == SIGUSR2)
+		if (g_client.got == SIGUSR2)
 			ret |= 1 << (7 - bit_count);
 		bit_count++;
-		got = 0;
-		kill(pid, SIGUSR1);
+		g_client.got = 0;
+		kill(g_client.pid, SIGUSR1);
 	}
 	return (ret);
 }
