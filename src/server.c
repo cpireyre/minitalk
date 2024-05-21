@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:19:59 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/21 12:21:07 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:25:28 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ int	main(void)
 		receive(&msg_size, sizeof(msg_size));
 		if (!msg_size)
 			continue ;
-		msg = malloc(msg_size);
+		msg = malloc(msg_size + 1);
+		msg[msg_size] = '\0';
 		if (receive(msg, msg_size))
-		{
-			ft_printf("「 ");
-			write(1, msg, msg_size);
-			ft_printf(" 」\n");
-		}
+			ft_printf("「 %s 」\n", msg);
 		else
 			ft_dprintf(STDERR_FILENO, ERROR_CLIENT_TIMED_OUT);
 		free(msg);
