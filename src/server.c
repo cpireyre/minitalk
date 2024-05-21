@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:19:59 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/21 12:25:28 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:41:28 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ void	set_signal_handlers(t_signal_handler callback);
 
 int	main(void)
 {
-	size_t				msg_size;
-	char				*msg;
+	size_t	msg_size;
+	char	*msg;
+	void	*ret;
 
 	ft_dprintf(STDERR_FILENO, "Initialising server...\n");
 	set_signal_handlers(&handler);
@@ -26,8 +27,8 @@ int	main(void)
 	{
 		ft_dprintf(STDERR_FILENO, "Listening...\n");
 		msg_size = 0;
-		receive(&msg_size, sizeof(msg_size));
-		if (!msg_size)
+		ret = receive(&msg_size, sizeof(msg_size));
+		if (!ret || !msg_size)
 			continue ;
 		msg = malloc(msg_size + 1);
 		msg[msg_size] = '\0';
@@ -37,6 +38,7 @@ int	main(void)
 			ft_dprintf(STDERR_FILENO, ERROR_CLIENT_TIMED_OUT);
 		free(msg);
 		reset_client();
+		ft_printf("Ready for new connection.\n");
 	}
 	return (0);
 }
