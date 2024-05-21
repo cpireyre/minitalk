@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:18:54 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/20 10:31:36 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:06:20 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,15 @@ void	*receive(void *addr, size_t size)
 void	handler(int sig, siginfo_t *siginfo, void *ctx)
 {
 	(void)ctx;
-	g_client.pid = siginfo->si_pid;
-	g_client.got = sig;
+	if (!g_client.pid)
+		g_client.pid = siginfo->si_pid;
+	if (g_client.pid == siginfo->si_pid)
+		g_client.signal_received = sig;
+}
+
+void	reset_client(void)
+{
+	g_client.pid = 0;
 }
 
 static unsigned char	receive_byte(void)
@@ -43,12 +50,12 @@ static unsigned char	receive_byte(void)
 	ret = 0;
 	while (bit_count < 8)
 	{
-		while (!g_client.got)
+		while (!g_client.signal_received)
 			usleep(1);
-		if (g_client.got == SIGUSR2)
+		if (g_client.signal_received == SIGUSR2)
 			ret |= 1 << (7 - bit_count);
 		bit_count++;
-		g_client.got = 0;
+		g_client.signal_received = 0;
 		kill(g_client.pid, SIGUSR1);
 	}
 	return (ret);
