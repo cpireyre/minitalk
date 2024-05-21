@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:19:59 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/21 10:05:35 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:21:07 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,20 @@ int	main(void)
 	ft_printf("Server PID: %u.\n", getpid());
 	while (1)
 	{
-		ft_dprintf(STDERR_FILENO, "Listening...");
+		ft_dprintf(STDERR_FILENO, "Listening...\n");
 		msg_size = 0;
 		receive(&msg_size, sizeof(msg_size));
+		if (!msg_size)
+			continue ;
 		msg = malloc(msg_size);
-		receive(msg, msg_size);
-		ft_printf(" message received!\n-> ");
-		write(1, msg, msg_size);
-		ft_printf("\n");
+		if (receive(msg, msg_size))
+		{
+			ft_printf("「 ");
+			write(1, msg, msg_size);
+			ft_printf(" 」\n");
+		}
+		else
+			ft_dprintf(STDERR_FILENO, ERROR_CLIENT_TIMED_OUT);
 		free(msg);
 		reset_client();
 	}

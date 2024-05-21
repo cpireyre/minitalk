@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:18:17 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/21 10:16:35 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:46:29 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ void	reset_client(void);
 
 typedef void	(*t_signal_handler)(int, struct __siginfo *, void *);
 
-# define ERROR_LOST_SERVER	"Lost server during transmission.\n"
-# define ERROR_USAGE		"usage: ./client server_pid message\n"
+# define ERROR_LOST_SERVER		"ERROR: Lost server during transmission.\n"
+# define ERROR_USAGE			"usage: ./client server_pid message\n"
+# define ERROR_CLIENT_TIMED_OUT	"ERROR: Client timed out.\n"
+
+/* Ten seconds */
+# define TIMEOUT_DELAY_MICROSECONDS 10000000
 
 #endif

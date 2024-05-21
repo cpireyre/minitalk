@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:18:54 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/21 10:06:20 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:45:51 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,21 @@
 
 static t_client	g_client;
 
-static unsigned char	receive_byte(void);
+static int	receive_byte(unsigned char *byte);
 
 void	*receive(void *addr, size_t size)
 {
 	unsigned char	*ptr;
+	int				err;
 
 	ft_bzero(addr, size);
 	ptr = (unsigned char *) addr;
 	while (size--)
-		*ptr++ = receive_byte();
+	{
+		err = receive_byte(ptr++);
+		if (err)
+			return (NULL);
+	}
 	return (addr);
 }
 
@@ -41,22 +46,24 @@ void	reset_client(void)
 	g_client.pid = 0;
 }
 
-static unsigned char	receive_byte(void)
+static int	receive_byte(unsigned char *byte)
 {
-	size_t			bit_count;
-	unsigned char	ret;
+	size_t	bit_count;
 
 	bit_count = 0;
-	ret = 0;
 	while (bit_count < 8)
 	{
 		while (!g_client.signal_received)
-			usleep(1);
+		{
+			usleep(TIMEOUT_DELAY_MICROSECONDS);
+			if (!g_client.signal_received)
+				return (1);
+		}
 		if (g_client.signal_received == SIGUSR2)
-			ret |= 1 << (7 - bit_count);
+			*byte |= 1 << (7 - bit_count);
 		bit_count++;
 		g_client.signal_received = 0;
 		kill(g_client.pid, SIGUSR1);
 	}
-	return (ret);
+	return (0);
 }
