@@ -25,20 +25,25 @@ int	main(void)
 	ft_printf("Server PID: %u.\n", getpid());
 	while (1)
 	{
-		ft_dprintf(STDERR_FILENO, "Listening...\n");
+		reset_client();
+		ft_printf("Ready for new connection. Listening...\n");
 		msg_size = 0;
 		ret = receive(&msg_size, sizeof(msg_size));
-		if (!ret || !msg_size)
-			continue ;
-		msg = malloc(msg_size + 1);
-		msg[msg_size] = '\0';
-		if (receive(msg, msg_size))
-			ft_printf("「 %s 」\n", msg);
-		else
-			ft_dprintf(STDERR_FILENO, ERROR_CLIENT_TIMED_OUT);
-		free(msg);
-		reset_client();
-		ft_printf("Ready for new connection.\n");
+		if (ret && msg_size)
+		{
+			msg = malloc(msg_size + 1);
+			if (!msg)
+			{
+				ft_dprintf(STDERR_FILENO, "ERROR: malloc fail\n");
+				return (1);
+			}
+			msg[msg_size] = '\0';
+			if (receive(msg, msg_size))
+				ft_printf("「 %s 」\n", msg);
+			else
+				ft_dprintf(STDERR_FILENO, ERROR_CLIENT_TIMED_OUT);
+			free(msg);
+		}
 	}
 	return (0);
 }
