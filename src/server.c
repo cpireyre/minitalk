@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:19:59 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/23 08:58:41 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/23 09:05:10 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static t_client	g_client;
 static void	handler(int sig, siginfo_t *siginfo, void *ctx);
-static void	receive_msg(size_t msg_size);
 static void	*receive(void *addr, size_t size);
 static int	receive_byte(unsigned char *byte);
+static void	receive_msg(size_t msg_size);
 
 int	main(void)
 {
@@ -51,24 +51,6 @@ static void	handler(int sig, siginfo_t *siginfo, void *ctx)
 		g_client.pid = siginfo->si_pid;
 	if (g_client.pid == siginfo->si_pid)
 		g_client.signal_received = sig;
-}
-
-static void	receive_msg(size_t msg_size)
-{
-	char	*msg;
-
-	msg = malloc(msg_size + 1);
-	if (msg)
-	{
-		msg[msg_size] = '\0';
-		if (receive(msg, msg_size))
-			ft_printf("「 %s 」\n", msg);
-		else
-			ft_dprintf(STDERR_FILENO, ERROR_CLIENT_TIMED_OUT);
-		free(msg);
-	}
-	else
-		ft_dprintf(STDERR_FILENO, ERROR_ALLOC_FAIL);
 }
 
 static void	*receive(void *addr, size_t size)
@@ -107,4 +89,22 @@ static int	receive_byte(unsigned char *byte)
 		kill(g_client.pid, SIGUSR1);
 	}
 	return (0);
+}
+
+static void	receive_msg(size_t msg_size)
+{
+	char	*msg;
+
+	msg = malloc(msg_size + 1);
+	if (msg)
+	{
+		msg[msg_size] = '\0';
+		if (receive(msg, msg_size))
+			ft_printf("「 %s 」\n", msg);
+		else
+			ft_dprintf(STDERR_FILENO, ERROR_CLIENT_TIMED_OUT);
+		free(msg);
+	}
+	else
+		ft_dprintf(STDERR_FILENO, ERROR_ALLOC_FAIL);
 }
