@@ -11,7 +11,7 @@ LDFLAGS := -L$(libft_dir) -lft
 applications := client server
 src_dir := ./src
 obj_dir := ./obj
-client_sources := send.c client.c 
+client_sources := client.c 
 client_objects := $(client_sources:%.c=$(obj_dir)/%.o)
 server_sources := server.c
 server_objects := $(server_sources:%.c=$(obj_dir)/%.o)
