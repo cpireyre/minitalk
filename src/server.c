@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:19:59 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/23 08:50:14 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/23 08:58:41 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	receive_msg(size_t msg_size)
 		free(msg);
 	}
 	else
-		ft_dprintf(STDERR_FILENO, "ERROR: malloc fail\n");
+		ft_dprintf(STDERR_FILENO, ERROR_ALLOC_FAIL);
 }
 
 static void	*receive(void *addr, size_t size)
