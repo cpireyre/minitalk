@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:18:32 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/23 09:02:30 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/23 09:08:30 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	nop(int sig);
 static int	send(pid_t listener, void *addr, size_t size);
-static int	spell(pid_t listener, unsigned char c, useconds_t delay_ms);
+static int	send_byte(pid_t listener, unsigned char c, useconds_t delay_ms);
 static int	wrap_send_error(pid_t server, void *addr, size_t size);
 
 int	main(int argc, char **argv)
@@ -53,12 +53,12 @@ static int	send(pid_t listener, void *addr, size_t size)
 
 	ptr = (unsigned char *) addr;
 	while (size--)
-		if (spell(listener, *ptr++, DELAY_MS))
+		if (send_byte(listener, *ptr++, DELAY_MS))
 			return (1);
 	return (0);
 }
 
-static int	spell(pid_t listener, unsigned char c, useconds_t delay_ms)
+static int	send_byte(pid_t listener, unsigned char c, useconds_t delay_ms)
 {
 	size_t	bit_count;
 	int		signal_to_send;

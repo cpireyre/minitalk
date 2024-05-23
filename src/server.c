@@ -6,7 +6,7 @@
 /*   By: copireyr <copireyr@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:19:59 by copireyr          #+#    #+#             */
-/*   Updated: 2024/05/23 09:05:10 by copireyr         ###   ########.fr       */
+/*   Updated: 2024/05/23 09:09:05 by copireyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_client	g_client;
 static void	handler(int sig, siginfo_t *siginfo, void *ctx);
 static void	*receive(void *addr, size_t size);
 static int	receive_byte(unsigned char *byte);
-static void	receive_msg(size_t msg_size);
+static void	receive_msg_and_print(size_t msg_size);
 
 int	main(void)
 {
@@ -39,7 +39,7 @@ int	main(void)
 		msg_size = 0;
 		ret = receive(&msg_size, sizeof(msg_size));
 		if (ret && msg_size)
-			receive_msg(msg_size);
+			receive_msg_and_print(msg_size);
 	}
 	return (0);
 }
@@ -91,7 +91,7 @@ static int	receive_byte(unsigned char *byte)
 	return (0);
 }
 
-static void	receive_msg(size_t msg_size)
+static void	receive_msg_and_print(size_t msg_size)
 {
 	char	*msg;
 
