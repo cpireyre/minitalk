@@ -24,10 +24,10 @@ $(obj_dir)/%.o: $(src_dir)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 client: $(libft) $(client_objects)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(client_objects) -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $(client_objects) -o $@ ./libft/libft.a
 
 server: $(libft) $(server_objects)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(server_objects) -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $(server_objects) -o $@ ./libft/libft.a
 
 .PHONY: all
 all: $(applications)
